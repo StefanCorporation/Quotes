@@ -20,8 +20,7 @@
   border-radius: 20px;
   width: 400px;
   height: 40px;
-  box-shadow: 3px 3px 2px black;
-  transition: all 0.15s ease;
+  box-shadow: 5px 5px 1px black;
   margin-top: 20px;
 }
 
@@ -88,7 +87,7 @@ body.dark {
   justify-content: space-between;
   padding: 5px;
   transition: background 0.4s;
-  box-shadow: 3px 3px 3px #111;
+  box-shadow: 3px 3px 1px #111;
 }
 
 body.dark .toggle {
@@ -115,4 +114,28 @@ body.dark .toggle {
 /* move animation */
 body.dark .ball {
   transform: translateX(35px);
+}
+
+.heart-emoji {
+  font-size: 20px;
+}
+
+.favorite-btn {
+  width: 100px;
+  border-radius: 20px;
+  box-shadow: 5px 5px #111;
+  background-color: bisque;
+}
+
+.favorite-btn:hover {
+  transform: translateY(1px);
+}
+
+.favorite-btn:active {
+  transform: scale(0.9);
+  box-shadow: 1px 1px 1px black;
+}
+
+.btn-fav-text {
+  margin-bottom: 2px;
 }
