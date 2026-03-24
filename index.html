@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Random-Quotes</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./CSS/styles.css" />
+    <link rel="stylesheet" href="./CSS/favorites.css" />
   </head>
   <body>
     <div class="dark-btn-container">
@@ -21,12 +22,12 @@
       <p id="quote">Click the button to ged a random quote</p>
       <button id="favorite-btn" class="favorite-btn">
         <div class="heart-emoji">🖤</div>
-        <div class="btn-fav-text">Add to favorite</div>
+        <div id="fav-btn" class="btn-fav-text">Add to favorite</div>
       </button>
       <button id="generate-btn" class="main-btn">Generate Quote</button>
     </div>
 
-    <div></div>
+    <div id="favs" class="fav-container"></div>
 
     <script src="script.js"></script>
   </body>

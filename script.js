@@ -1,6 +1,9 @@
 const quote = document.getElementById('quote')
 const author = document.getElementById('author')
-const button = document.getElementById('generate-btn')
+const generateBtn = document.getElementById('generate-btn')
+const toggle = document.getElementById('theme-toggle')
+const favBtn = document.getElementById('fav-btn')
+const favsContainer = document.getElementById('favs')
 
 let quotes = []
 
@@ -15,14 +18,25 @@ function randomQuote() {
 
   quote.textContent = `"${random.text}"`
   author.textContent = `${random.author}`
+
+  return random
 }
 
-button.addEventListener('click', randomQuote)
+generateBtn.addEventListener('click', randomQuote)
 
 //dark Mode
-
-const toggle = document.getElementById('theme-toggle')
-
 toggle.addEventListener('click', () => {
   document.body.classList.toggle('dark')
 })
+
+// favorites
+function addFavorites() {
+  const item = document.createElement('div')
+
+  item.classList.add('item')
+  item.textContent = randomQuote().text
+
+  favsContainer.appendChild(item)
+}
+
+favBtn.addEventListener('click', addFavorites)

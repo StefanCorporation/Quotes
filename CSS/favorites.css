@@ -1,0 +1,17 @@
+.fav-container {
+  margin-top: 70px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px 20px;
+}
+
+.item {
+  border: 2px solid rgb(0, 0, 0);
+  width: 150px;
+  height: 150px;
+  border-radius: 25px;
+  background-color: bisque;
+  box-shadow: 6px 6px 1px black;
+}
