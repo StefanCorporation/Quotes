@@ -5,13 +5,13 @@ const toggle = document.getElementById('theme-toggle')
 const favBtn = document.getElementById('fav-btn')
 const favsContainer = document.getElementById('favs')
 
-let quotes = []
-
 fetch('./data.json')
   .then((res) => res.json())
   .then((data) => {
     quotes = data
   })
+
+const finalQuotes = []
 
 function randomQuote() {
   const random = quotes[Math.floor(Math.random() * quotes.length)]
@@ -19,7 +19,9 @@ function randomQuote() {
   quote.textContent = `"${random.text}"`
   author.textContent = `${random.author}`
 
-  return random
+  finalQuotes.push(random)
+
+  finalQuotes.splice(0, finalQuotes.length - 1)
 }
 
 generateBtn.addEventListener('click', randomQuote)
@@ -30,13 +32,27 @@ toggle.addEventListener('click', () => {
 })
 
 // favorites
-function addFavorites() {
+function addFavorites(quote) {
   const item = document.createElement('div')
-
   item.classList.add('item')
-  item.textContent = randomQuote().text
+
+  const favQuoteText = document.createElement('div')
+  const favAuthor = document.createElement('div')
+
+  favQuoteText.classList.add('favQuote')
+  favAuthor.classList.add('favAuthor')
+
+  favQuoteText.textContent = `"${quote.text}"`
+  favAuthor.textContent = `${quote.author}`
+
+  item.appendChild(favAuthor)
+  favAuthor.appendChild(favQuoteText)
 
   favsContainer.appendChild(item)
 }
 
-favBtn.addEventListener('click', addFavorites)
+favBtn.addEventListener('click', () => {
+  if (finalQuotes.length > 0) {
+    addFavorites(finalQuotes[0])
+  }
+})

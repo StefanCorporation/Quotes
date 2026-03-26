@@ -9,9 +9,23 @@
 
 .item {
   border: 2px solid rgb(0, 0, 0);
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 25px;
   background-color: bisque;
   box-shadow: 6px 6px 1px black;
+  font-style: italic;
+  text-align: center;
+}
+
+.favQuote {
+  margin-top: 70px;
+  display: block;
+  text-align: center;
+}
+
+.favAuthor {
+  margin-top: 10px;
+  display: block;
+  text-align: center;
 }
