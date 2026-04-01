@@ -4,24 +4,25 @@ const generateBtn = document.getElementById('generate-btn')
 const toggle = document.getElementById('theme-toggle')
 const favBtn = document.getElementById('fav-btn')
 const favsContainer = document.getElementById('favs')
+const heart = document.getElementById('heart')
 
-fetch('./data.json')
-  .then((res) => res.json())
-  .then((data) => {
-    quotes = data
-  })
+import data from './quotes.js'
 
-const finalQuotes = []
+let randomQuotes
+let quoteIndex
 
 function randomQuote() {
-  const random = quotes[Math.floor(Math.random() * quotes.length)]
+  const randomIndex = Math.floor(Math.random() * data.length)
+  const random = data[randomIndex]
 
   quote.textContent = `"${random.text}"`
   author.textContent = `${random.author}`
 
-  finalQuotes.push(random)
+  randomQuotes = random
+  quoteIndex = randomIndex
 
-  finalQuotes.splice(0, finalQuotes.length - 1)
+  heart.textContent = `${'🖤'}`
+  favBtn.textContent = 'Add to favorite'
 }
 
 generateBtn.addEventListener('click', randomQuote)
@@ -33,6 +34,8 @@ toggle.addEventListener('click', () => {
 
 // favorites
 function addFavorites(quote) {
+  //creating and adding favorite cards
+
   const item = document.createElement('div')
   item.classList.add('item')
 
@@ -42,17 +45,23 @@ function addFavorites(quote) {
   favQuoteText.classList.add('favQuote')
   favAuthor.classList.add('favAuthor')
 
-  favQuoteText.textContent = `"${quote.text}"`
-  favAuthor.textContent = `${quote.author}`
+  const currentQuote = data[quoteIndex]
+  if (!currentQuote.isFavorite) {
+    currentQuote.isFavorite = true
 
-  item.appendChild(favAuthor)
-  favAuthor.appendChild(favQuoteText)
+    heart.textContent = `${'❤️'}`
+    favBtn.textContent = 'Added to favorite'
 
-  favsContainer.appendChild(item)
+    favQuoteText.textContent = `${quote.text}`
+    favAuthor.textContent = `${quote.author}`
+
+    item.appendChild(favAuthor)
+    favAuthor.appendChild(favQuoteText)
+
+    favsContainer.appendChild(item)
+  }
 }
 
 favBtn.addEventListener('click', () => {
-  if (finalQuotes.length > 0) {
-    addFavorites(finalQuotes[0])
-  }
+  addFavorites(randomQuotes)
 })
