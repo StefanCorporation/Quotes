@@ -32,6 +32,8 @@ toggle.addEventListener('click', () => {
   document.body.classList.toggle('dark')
 })
 
+let trash
+
 // favorites
 function addFavorites(quote) {
   //creating and adding favorite cards
@@ -62,6 +64,14 @@ function addFavorites(quote) {
     item.appendChild(removeFavBtn)
 
     favsContainer.appendChild(item)
+
+    // removing favs
+    removeFavBtn.addEventListener('click', () => {
+      currentQuote.isFavorite = false
+      item.remove()
+      heart.textContent = `${'🖤'}`
+      favBtn.textContent = 'Add to favorite'
+    })
   } else {
     alert('Quote already added!!!')
   }
@@ -70,5 +80,3 @@ function addFavorites(quote) {
 favBtn.addEventListener('click', () => {
   addFavorites(randomQuotes)
 })
-
-function removeFvorites() {}
