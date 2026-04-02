@@ -63,3 +63,11 @@
   transform: scale(0.96);
   box-shadow: 1px 1px 1px black;
 }
+
+.tumbleweedGif {
+  border: 2px solid rgb(0, 0, 0);
+  width: 200px;
+  height: 200px;
+  border-radius: 25px;
+  box-shadow: 5px 7px black;
+}

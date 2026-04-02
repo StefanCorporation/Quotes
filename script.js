@@ -7,6 +7,7 @@ const toggle = document.getElementById('theme-toggle')
 const favBtn = document.getElementById('fav-btn')
 const favsContainer = document.getElementById('favs')
 const heart = document.getElementById('heart')
+let tumbleweed = document.getElementById('tumbleweed')
 
 let randomQuotes
 let quoteIndex
@@ -21,8 +22,13 @@ function randomQuote() {
   randomQuotes = random
   quoteIndex = randomIndex
 
-  heart.textContent = `${'🖤'}`
-  favBtn.textContent = 'Add to favorite'
+  if (random.isFavorite) {
+    heart.textContent = `${'❤️'}`
+    favBtn.textContent = 'Added to favorite'
+  } else {
+    heart.textContent = `${'🖤'}`
+    favBtn.textContent = 'Add to favorite'
+  }
 }
 
 generateBtn.addEventListener('click', randomQuote)
@@ -32,11 +38,13 @@ toggle.addEventListener('click', () => {
   document.body.classList.toggle('dark')
 })
 
-let trash
+let quoteQuantity = 0
 
 // favorites
 function addFavorites(quote) {
   //creating and adding favorite cards
+
+  tumbleweed.remove()
 
   const item = document.createElement('div')
   const favQuoteText = document.createElement('div')
@@ -65,12 +73,24 @@ function addFavorites(quote) {
 
     favsContainer.appendChild(item)
 
+    quoteQuantity += 1
+
     // removing favs
     removeFavBtn.addEventListener('click', () => {
       currentQuote.isFavorite = false
       item.remove()
+
       heart.textContent = `${'🖤'}`
       favBtn.textContent = 'Add to favorite'
+
+      quoteQuantity -= 1
+
+      if (quoteQuantity == 0) {
+        tumbleweed = document.createElement('img')
+        tumbleweed.classList.add('tumbleweedGif')
+        tumbleweed.src = './tumbleweed.gif'
+        favsContainer.appendChild(tumbleweed)
+      }
     })
   } else {
     alert('Quote already added!!!')
