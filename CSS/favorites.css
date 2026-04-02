@@ -17,10 +17,24 @@
   font-style: italic;
   text-align: center;
   color: black;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.item:hover {
+  transform: scale(1.05);
+  box-shadow: 10px 10px 10px black;
 }
 
 .favQuote {
-  margin-top: 70px;
+  margin-top: 20px;
   display: block;
   text-align: center;
 }
@@ -29,4 +43,23 @@
   margin-top: 10px;
   display: block;
   text-align: center;
+}
+
+.removeBtn {
+  margin-top: auto;
+  margin-bottom: 10px;
+  width: 50px;
+  height: 25px;
+  align-self: center;
+  border-radius: 10px;
+  box-shadow: 2px 2px 1px black;
+}
+
+.removeBtn:hover {
+  transform: translateY(1px);
+}
+
+.removeBtn:active {
+  transform: scale(0.96);
+  box-shadow: 1px 1px 1px black;
 }

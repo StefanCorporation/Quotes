@@ -1,3 +1,5 @@
+import data from './quotes.js'
+
 const quote = document.getElementById('quote')
 const author = document.getElementById('author')
 const generateBtn = document.getElementById('generate-btn')
@@ -5,8 +7,6 @@ const toggle = document.getElementById('theme-toggle')
 const favBtn = document.getElementById('fav-btn')
 const favsContainer = document.getElementById('favs')
 const heart = document.getElementById('heart')
-
-import data from './quotes.js'
 
 let randomQuotes
 let quoteIndex
@@ -37,13 +37,15 @@ function addFavorites(quote) {
   //creating and adding favorite cards
 
   const item = document.createElement('div')
-  item.classList.add('item')
-
   const favQuoteText = document.createElement('div')
   const favAuthor = document.createElement('div')
+  const removeFavBtn = document.createElement('button')
 
+  item.classList.add('item')
   favQuoteText.classList.add('favQuote')
   favAuthor.classList.add('favAuthor')
+  removeFavBtn.classList.add('removeBtn')
+  removeFavBtn.textContent = `${'🗑️'}`
 
   const currentQuote = data[quoteIndex]
   if (!currentQuote.isFavorite) {
@@ -52,16 +54,21 @@ function addFavorites(quote) {
     heart.textContent = `${'❤️'}`
     favBtn.textContent = 'Added to favorite'
 
-    favQuoteText.textContent = `${quote.text}`
+    favQuoteText.textContent = `"${quote.text}"`
     favAuthor.textContent = `${quote.author}`
 
     item.appendChild(favAuthor)
-    favAuthor.appendChild(favQuoteText)
+    item.appendChild(favQuoteText)
+    item.appendChild(removeFavBtn)
 
     favsContainer.appendChild(item)
+  } else {
+    alert('Quote already added!!!')
   }
 }
 
 favBtn.addEventListener('click', () => {
   addFavorites(randomQuotes)
 })
+
+function removeFvorites() {}
