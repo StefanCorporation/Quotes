@@ -11,6 +11,17 @@ let tumbleweed = document.getElementById('tumbleweed')
 
 let randomQuotes
 let quoteIndex
+let lastQuotes = []
+
+function heartToggle(click) {
+  if (!click) {
+    heart.textContent = `${'🖤'}`
+    favBtn.textContent = 'Add to favorite'
+  } else {
+    heart.textContent = `${'❤️'}`
+    favBtn.textContent = 'Added to favorite'
+  }
+}
 
 function randomQuote() {
   const randomIndex = Math.floor(Math.random() * data.length)
@@ -22,13 +33,7 @@ function randomQuote() {
   randomQuotes = random
   quoteIndex = randomIndex
 
-  if (random.isFavorite) {
-    heart.textContent = `${'❤️'}`
-    favBtn.textContent = 'Added to favorite'
-  } else {
-    heart.textContent = `${'🖤'}`
-    favBtn.textContent = 'Add to favorite'
-  }
+  heartToggle(random.isFavorite)
 }
 
 generateBtn.addEventListener('click', randomQuote)
@@ -57,12 +62,10 @@ function addFavorites(quote) {
   removeFavBtn.classList.add('removeBtn')
   removeFavBtn.textContent = `${'🗑️'}`
 
-  const currentQuote = data[quoteIndex]
-  if (!currentQuote.isFavorite) {
-    currentQuote.isFavorite = true
+  if (!quote.isFavorite) {
+    quote.isFavorite = true
 
-    heart.textContent = `${'❤️'}`
-    favBtn.textContent = 'Added to favorite'
+    heartToggle(quote.isFavorite)
 
     favQuoteText.textContent = `"${quote.text}"`
     favAuthor.textContent = `${quote.author}`
@@ -77,11 +80,20 @@ function addFavorites(quote) {
 
     // removing favs
     removeFavBtn.addEventListener('click', () => {
-      currentQuote.isFavorite = false
+      quote.isFavorite = false
       item.remove()
 
-      heart.textContent = `${'🖤'}`
-      favBtn.textContent = 'Add to favorite'
+      if (
+        quote.text === randomQuotes.text &&
+        quote.author === randomQuotes.author
+      ) {
+        heartToggle(false)
+      } else if (
+        quote.text !== randomQuotes.text &&
+        quote.author !== randomQuotes.author
+      ) {
+        heartToggle(true)
+      }
 
       quoteQuantity -= 1
 

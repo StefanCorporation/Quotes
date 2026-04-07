@@ -49,6 +49,11 @@ const data = [
     author: 'Oscar Wilde',
     isFavorite: false,
   },
+  {
+    text: 'Bbla bla bla.',
+    author: 'Steve Jobs',
+    isFavorite: false,
+  },
 ]
 
 export default data
