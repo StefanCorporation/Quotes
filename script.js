@@ -1,7 +1,7 @@
 import data from './quotes.js'
 
-const quote = document.getElementById('quote')
-const author = document.getElementById('author')
+const quotes = document.getElementById('quote')
+const authors = document.getElementById('author')
 const generateBtn = document.getElementById('generate-btn')
 const toggle = document.getElementById('theme-toggle')
 const favBtn = document.getElementById('fav-btn')
@@ -11,7 +11,6 @@ let tumbleweed = document.getElementById('tumbleweed')
 
 let randomQuotes
 let quoteIndex
-let lastQuotes = []
 
 function heartToggle(click) {
   if (!click) {
@@ -27,8 +26,8 @@ function randomQuote() {
   const randomIndex = Math.floor(Math.random() * data.length)
   const random = data[randomIndex]
 
-  quote.textContent = `"${random.text}"`
-  author.textContent = `${random.author}`
+  quotes.textContent = `"${random.text}"`
+  authors.textContent = `${random.author}`
 
   randomQuotes = random
   quoteIndex = randomIndex
@@ -44,11 +43,11 @@ toggle.addEventListener('click', () => {
 })
 
 let quoteQuantity = 0
+let removedQuote = false
 
 // favorites
 function addFavorites(quote) {
   //creating and adding favorite cards
-
   tumbleweed.remove()
 
   const item = document.createElement('div')
@@ -62,8 +61,14 @@ function addFavorites(quote) {
   removeFavBtn.classList.add('removeBtn')
   removeFavBtn.textContent = `${'🗑️'}`
 
+  if (removedQuote) {
+    quote = removedQuote
+    randomQuotes = quote
+  }
+
   if (!quote.isFavorite) {
     quote.isFavorite = true
+    removedQuote = false
 
     heartToggle(quote.isFavorite)
 
@@ -78,34 +83,32 @@ function addFavorites(quote) {
 
     quoteQuantity += 1
 
-    // removing favs
     removeFavBtn.addEventListener('click', () => {
-      quote.isFavorite = false
-      item.remove()
-
-      if (
-        quote.text === randomQuotes.text &&
-        quote.author === randomQuotes.author
-      ) {
-        heartToggle(false)
-      } else if (
-        quote.text !== randomQuotes.text &&
-        quote.author !== randomQuotes.author
-      ) {
-        heartToggle(true)
-      }
-
-      quoteQuantity -= 1
-
-      if (quoteQuantity == 0) {
-        tumbleweed = document.createElement('img')
-        tumbleweed.classList.add('tumbleweedGif')
-        tumbleweed.src = './tumbleweed.gif'
-        favsContainer.appendChild(tumbleweed)
-      }
+      removingFavoritesCards(quote, item)
     })
   } else {
     alert('Quote already added!!!')
+  }
+}
+
+function removingFavoritesCards(quote, card) {
+  quote.isFavorite = false
+  card.remove()
+
+  removedQuote = quote
+
+  quotes.textContent = `"${quote.text}"`
+  authors.textContent = `${quote.author}`
+
+  heartToggle(quote.isFavorite)
+
+  quoteQuantity -= 1
+
+  if (quoteQuantity == 0) {
+    tumbleweed = document.createElement('img')
+    tumbleweed.classList.add('tumbleweedGif')
+    tumbleweed.src = './tumbleweed.gif'
+    favsContainer.appendChild(tumbleweed)
   }
 }
 
