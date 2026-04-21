@@ -6,6 +6,7 @@ const authors = document.getElementById('author')
 const generateBtn = document.getElementById('generate-btn')
 const toggle = document.getElementById('theme-toggle')
 const favBtn = document.getElementById('fav-btn')
+const wholeFavoriteButton = document.getElementById('favorite-btn')
 const favsContainer = document.getElementById('favs')
 const heart = document.getElementById('heart')
 let tumbleweed = document.getElementById('tumbleweed')
@@ -23,8 +24,10 @@ function heartToggle(click) {
 }
 
 function randomQuote() {
-  const random = data[generateRnadomInt(data.length)]
+  return data[generateRnadomInt(data.length)]
+}
 
+function showRandomQuote(random) {
   quotes.textContent = `"${random.text}"`
   authors.textContent = `${random.author}`
 
@@ -33,7 +36,7 @@ function randomQuote() {
   heartToggle(random.isFavorite)
 }
 
-generateBtn.addEventListener('click', randomQuote)
+generateBtn.addEventListener('click', () => showRandomQuote(randomQuote()))
 
 //dark Mode
 toggle.addEventListener('click', () => {
@@ -43,9 +46,7 @@ toggle.addEventListener('click', () => {
 let quoteQuantity = 0
 let removedQuote = false
 
-// favorites
-function addFavorites(quote) {
-  //creating and adding favorite cards
+function createCard() {
   tumbleweed.remove()
 
   const item = document.createElement('div')
@@ -58,6 +59,20 @@ function addFavorites(quote) {
   favAuthor.classList.add('favAuthor')
   removeFavBtn.classList.add('removeBtn')
   removeFavBtn.textContent = `${'🗑️'}`
+
+  return { item, favQuoteText, favAuthor, removeFavBtn }
+}
+
+function triggerShake(element) {
+  element.classList.add('shake')
+
+  setTimeout(() => {
+    element.classList.remove('shake')
+  }, 300)
+}
+
+function addFavorites(quote) {
+  const { item, favQuoteText, favAuthor, removeFavBtn } = createCard()
 
   if (removedQuote) {
     quote = removedQuote
@@ -85,7 +100,12 @@ function addFavorites(quote) {
       removingFavoritesCards(quote, item)
     })
   } else {
-    alert('Quote already added!!!')
+    favBtn.textContent = 'Already added!'
+    triggerShake(wholeFavoriteButton)
+
+    setTimeout(() => {
+      favBtn.textContent = 'Add to favorite'
+    }, 1000)
   }
 }
 
