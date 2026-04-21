@@ -1,4 +1,5 @@
 import data from './quotes.js'
+import { generateRnadomInt } from './utils.js'
 
 const quotes = document.getElementById('quote')
 const authors = document.getElementById('author')
@@ -10,7 +11,6 @@ const heart = document.getElementById('heart')
 let tumbleweed = document.getElementById('tumbleweed')
 
 let randomQuotes
-let quoteIndex
 
 function heartToggle(click) {
   if (!click) {
@@ -23,14 +23,12 @@ function heartToggle(click) {
 }
 
 function randomQuote() {
-  const randomIndex = Math.floor(Math.random() * data.length)
-  const random = data[randomIndex]
+  const random = data[generateRnadomInt(data.length)]
 
   quotes.textContent = `"${random.text}"`
   authors.textContent = `${random.author}`
 
   randomQuotes = random
-  quoteIndex = randomIndex
 
   heartToggle(random.isFavorite)
 }
