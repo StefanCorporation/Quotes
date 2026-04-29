@@ -48,12 +48,13 @@
   transform: translateY(1px);
 }
 
+html,
 body {
-  transition:
-    background 0.4s,
-    color 0.4s;
-  background: aqua;
-  color: #111;
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
   font-family:
     system-ui,
     -apple-system,

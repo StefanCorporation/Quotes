@@ -1,5 +1,8 @@
 import data from './quotes.js'
 import { generateRnadomInt } from './utils.js'
+import { initVanta, setVantaColor } from './JS/vanta.js'
+
+initVanta()
 
 const quotes = document.getElementById('quote')
 const authors = document.getElementById('author')
@@ -41,6 +44,12 @@ generateBtn.addEventListener('click', () => showRandomQuote(randomQuote()))
 //dark Mode
 toggle.addEventListener('click', () => {
   document.body.classList.toggle('dark')
+
+  if (document.body.classList.contains('dark')) {
+    setVantaColor(0x2f3737)
+  } else {
+    setVantaColor(0x6969)
+  }
 })
 
 let quoteQuantity = 0
