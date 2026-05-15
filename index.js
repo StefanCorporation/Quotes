@@ -1,6 +1,14 @@
 import data from './quotes.js'
-import { generateRnadomInt } from './utils.js'
+import { generateRnadomInt } from './utils/math.js'
 import { initVanta, setVantaColor } from './JS/vanta.js'
+import { generateHexId } from './utils/idGenerator.js'
+import { heartToggle } from './utils/heartToggle.js'
+import { setDarkTheme } from './utils/darkMode.js'
+import {
+  getFromLocalStorage,
+  setInLocalStorage,
+  removeFromLocalStorage,
+} from './utils/localStorage.js'
 
 initVanta()
 
@@ -8,25 +16,21 @@ const quotes = document.getElementById('quote')
 const authors = document.getElementById('author')
 const generateBtn = document.getElementById('generate-btn')
 const toggle = document.getElementById('theme-toggle')
-const favBtn = document.getElementById('fav-btn')
 const wholeFavoriteButton = document.getElementById('favorite-btn')
-const favsContainer = document.getElementById('favs')
 const heart = document.getElementById('heart')
-let tumbleweed = document.getElementById('tumbleweed')
+const tumbleweed = document.getElementById('tumbleweed')
+const item = document.querySelector('.item')
+const authorCard = document.getElementById('authorCard')
+const quoteCard = document.getElementById('quoteCard')
+const favContainer = document.getElementById('favs')
+
+toggle.addEventListener('click', setDarkTheme)
 
 let randomQuotes
+const localObject = {}
 
-function heartToggle(click) {
-  if (!click) {
-    heart.textContent = `${'🖤'}`
-    favBtn.textContent = 'Add to favorite'
-  } else {
-    heart.textContent = `${'❤️'}`
-    favBtn.textContent = 'Added to favorite'
-  }
-}
-
-function randomQuote() {
+console.log(localObject)
+function generateRandomQuote() {
   return data[generateRnadomInt(data.length)]
 }
 
@@ -35,110 +39,66 @@ function showRandomQuote(random) {
   authors.textContent = `${random.author}`
 
   randomQuotes = random
-
   heartToggle(random.isFavorite)
 }
 
-generateBtn.addEventListener('click', () => showRandomQuote(randomQuote()))
+generateBtn.addEventListener('click', () =>
+  showRandomQuote(generateRandomQuote()),
+)
 
-//dark Mode
-toggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark')
-
-  if (document.body.classList.contains('dark')) {
-    setVantaColor(0x2f3737)
-  } else {
-    setVantaColor(0x6969)
-  }
-})
-
-let quoteQuantity = 0
-let removedQuote = false
-
-function createCard() {
-  tumbleweed.remove()
-
+function createCard(randomQuote) {
   const item = document.createElement('div')
-  const favQuoteText = document.createElement('div')
-  const favAuthor = document.createElement('div')
-  const removeFavBtn = document.createElement('button')
+  const author = document.createElement('div')
+  const quote = document.createElement('div')
+  const removeBtn = document.createElement('button')
 
+  author.classList.add('favAuthor')
+  quote.classList.add('favQuote')
+  removeBtn.classList.add('removeBtn')
+  removeBtn.textContent = `${'🗑️'}`
   item.classList.add('item')
-  favQuoteText.classList.add('favQuote')
-  favAuthor.classList.add('favAuthor')
-  removeFavBtn.classList.add('removeBtn')
-  removeFavBtn.textContent = `${'🗑️'}`
 
-  return { item, favQuoteText, favAuthor, removeFavBtn }
+  item.appendChild(author)
+  item.appendChild(quote)
+  item.appendChild(removeBtn)
+  favContainer.appendChild(item)
+
+  author.textContent = randomQuote.author
+  quote.textContent = randomQuote.text
+
+  tumbleweed.classList.add('hidden')
+  item.classList.remove('hidden')
 }
 
-function triggerShake(element) {
-  element.classList.add('shake')
+function getAllDataFLS(key = null) {
+  const localData = JSON.parse(localStorage.localQuotes)
 
-  setTimeout(() => {
-    element.classList.remove('shake')
-  }, 300)
-}
-
-function addFavorites(quote) {
-  const { item, favQuoteText, favAuthor, removeFavBtn } = createCard()
-
-  if (removedQuote) {
-    quote = removedQuote
-    randomQuotes = quote
-  }
-
-  if (!quote.isFavorite) {
-    quote.isFavorite = true
-    removedQuote = false
-
-    heartToggle(quote.isFavorite)
-
-    favQuoteText.textContent = `"${quote.text}"`
-    favAuthor.textContent = `${quote.author}`
-
-    item.appendChild(favAuthor)
-    item.appendChild(favQuoteText)
-    item.appendChild(removeFavBtn)
-
-    favsContainer.appendChild(item)
-
-    quoteQuantity += 1
-
-    removeFavBtn.addEventListener('click', () => {
-      removingFavoritesCards(quote, item)
-    })
-  } else {
-    favBtn.textContent = 'Already added!'
-    triggerShake(wholeFavoriteButton)
-
-    setTimeout(() => {
-      favBtn.textContent = 'Add to favorite'
-    }, 1000)
+  if (localData) {
+    for (const [key, value] of Object.entries(localData)) {
+      console.log(`${key}: ${value.text}`)
+      showFavoriteCards(value)
+    }
   }
 }
 
-function removingFavoritesCards(quote, card) {
-  quote.isFavorite = false
-  card.remove()
-
-  removedQuote = quote
-
-  quotes.textContent = `"${quote.text}"`
-  authors.textContent = `${quote.author}`
-
-  heartToggle(quote.isFavorite)
-
-  quoteQuantity -= 1
-
-  if (quoteQuantity == 0) {
-    tumbleweed = document.createElement('img')
-    tumbleweed.classList.add('tumbleweedGif')
-    tumbleweed.src = './tumbleweed.gif'
-    favsContainer.appendChild(tumbleweed)
-  }
+function showFavoriteCards(randomQuote) {
+  createCard(randomQuote)
 }
 
-favBtn.addEventListener('click', () => {
-  addFavorites(randomQuotes)
-})
+function addFavoriteCards(randomQuote) {
+  let idforQuote = generateHexId()
+
+  randomQuote.isFavorite = true
+  randomQuote.id = idforQuote
+
+  localObject[idforQuote] = randomQuote
+  setInLocalStorage('localQuotes', localObject)
+
+  showFavoriteCards(randomQuote)
+}
+
+document.addEventListener('DOMContentLoaded', getAllDataFLS)
+
+wholeFavoriteButton.addEventListener('click', () =>
+  addFavoriteCards(randomQuotes),
+)

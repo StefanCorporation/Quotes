@@ -1,6 +1,6 @@
 let effect = null
 
-export function initVanta() {
+function initVanta() {
   effect = VANTA.WAVES({
     el: '#vanta',
     mouseControls: false,
@@ -14,8 +14,10 @@ export function initVanta() {
   })
 }
 
-export function setVantaColor(color) {
+function setVantaColor(color) {
   if (effect) {
     effect.setOptions({ color })
   }
 }
+
+export { initVanta, setVantaColor }
